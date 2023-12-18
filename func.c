@@ -82,19 +82,32 @@ double calc_energy() {
     return energy/2;    //avoid double-counting
 }
 
+double calc_energy_difference(int index, int newphi) {
+    double e0 = 0,e1 = 0;
+    int dd;
+    for(dd = 0; dd < nei_num; dd++) {
+        e0 += energytable[real_mod(sitelist[index].phi-sitelist[sitelist[index].neis[dd]].phi,q)];
+    }
+    int oldphi = sitelist[index].phi;
+    sitelist[index].phi = newphi;
+    for(dd = 0; dd < nei_num; dd++) {
+        e1 += energytable[real_mod(sitelist[index].phi-sitelist[sitelist[index].neis[dd]].phi,q)];
+    }
+    sitelist[index].phi = oldphi;
+    return e1-e0;
+}
 
 
 void try_change_spin(int index) {
-    double e0 = calc_energy();
-    int rand_angle = (int)((double)rand()/RAND_MAX*q)%q;
-    int old_angle = sitelist[index].phi;
-    sitelist[index].phi = rand_angle;
-    double e1 = calc_energy();
-    if(e1-e0>0.) {
+    int rand_phi = (int)((double)rand()/RAND_MAX*q)%q;
+    double de = calc_energy_difference(index, rand_phi);
+    if(de>0.) {
         double acc_rand = (double)rand()/RAND_MAX;
-        if(exp(-(e1-e0)/(kB*T)) < acc_rand) {
-            sitelist[index].phi = old_angle;
+        if(exp(-(de)/(kB*T)) < acc_rand) {
+            ;
         }
+    } else {
+        sitelist[index].phi = rand_phi;
     }
 }
 
