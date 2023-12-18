@@ -1,4 +1,5 @@
 #include "vars.h"
 
-
-int initiate_sites();
+void site_to_coords(int* coords, int sitenum);
+int coords_to_site(int* coords);
+void initiateSites();

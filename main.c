@@ -4,6 +4,11 @@
 //compile with gcc -o pottsmodel main.c vars.c func.c -lm
 
 int main() {
-    initiate_sites();
+    mallocSitelist();   //mallocs sitelist
+    initiateSites();    //initializes with spin up and writes neighbour list
+
+    
+
+    freeSitelist();     //frees sitelist
     return 0;
 }

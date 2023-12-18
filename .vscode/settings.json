@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "vars.h": "c",
-        "macros.h": "c"
+        "func.h": "c",
+        "stdlib.h": "c"
     }
 }
