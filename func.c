@@ -36,8 +36,10 @@ void initiate_sites() {
         int neicoords[dim];
         int nei1,nei2;
         int rest = 0;
+        int rand_spin;
         for(cc = 0; cc < N; cc++) {
-            sitelist[cc].phi = 0;       //all spins pointing up
+            int rand_spin = (int)((double) rand()/RAND_MAX*q);
+            sitelist[cc].phi = rand_spin;       //all spins randomized
 
             site_to_coords(coords, cc);
 
@@ -76,7 +78,7 @@ double calc_energy() {
 
 void try_change_spin(int index) {
     double e0 = calc_energy();
-    int rand_angle = (int)((double)rand()/RAND_MAX*q)%2;
+    int rand_angle = (int)((double)rand()/RAND_MAX*q)%q;
     int old_angle = sitelist[index].phi;
     sitelist[index].phi = rand_angle;
     double e1 = calc_energy();

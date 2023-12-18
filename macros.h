@@ -10,7 +10,7 @@
 
 
 #ifndef q               //define number of possible spin configurations
-#define q 2
+#define q 4
 #endif
 
 #ifndef n
