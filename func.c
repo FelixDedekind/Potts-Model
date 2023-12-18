@@ -101,14 +101,10 @@ double calc_energy_difference(int index, int newphi) {
 void try_change_spin(int index) {
     int rand_phi = (int)((double)rand()/RAND_MAX*q)%q;
     double de = calc_energy_difference(index, rand_phi);
-    if(de>0.) {
-        double acc_rand = (double)rand()/RAND_MAX;
-        if(exp(-(de)/(kB*T)) < acc_rand) {
-            ;
-        }
-    } else {
-        sitelist[index].phi = rand_phi;
-    }
+    double acc_rand = (double)rand()/RAND_MAX;
+    int flipable = 1;
+    if(de>0. && exp(-de/(kB*T)) < acc_rand) flipable = 0;
+    if(flipable==1) sitelist[index].phi = rand_phi;
 }
 
 
