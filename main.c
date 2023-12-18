@@ -4,21 +4,25 @@
 //compile with gcc -o pottsmodel main.c vars.c func.c -lm
 
 double test_temp(double Temp) {
-    FILE* out = fopen("energy_over_temp.txt", "a");
+    FILE* out_en = fopen("energy_over_temp.txt", "a");
+    FILE* out_mag = fopen("mag_over_temp.txt", "a");
     T = Temp;
     int mc_timesteps = 5000;
     int ii;
     int naverage = 1000;
-    double Eavg = 0;
+    double mag_avg = 0;
+    double E_avg = 0;
     for(ii = 0; ii < mc_timesteps; ii++) {
         mc_timestep();
         if(ii > mc_timesteps - naverage) {
-            Eavg += calc_energy()/(double)naverage;
+            E_avg += calc_energy()/(double)naverage;
+            mag_avg += fabs(calc_magnetization())/(double)naverage;
         }
     }
-    printf("%f ",calc_energy());
-    fprintf(out, "%f %f \n",Temp, Eavg);
-    fclose(out);
+    fprintf(out_en, "%f %f \n",Temp, E_avg);
+    fprintf(out_mag, "%f %f \n",Temp, mag_avg);
+    fclose(out_en);
+    fclose(out_mag);
 }
 
 int main() {
@@ -27,17 +31,21 @@ int main() {
     initiate_energy_table();
     initiate_sites();    //initializes with spin up and writes neighbour list
     
-    FILE* out = fopen("energy_over_temp.txt", "w");
-    fclose(out);
+    FILE* out_en = fopen("energy_over_temp.txt", "w");
+    fclose(out_en);
+
+    FILE* out_mag = fopen("mag_over_temp.txt", "w");
+    fclose(out_mag);
 
 
-    double T_init = 0.6;
-    double T_final = 5;
-    int T_steps = 100;
+    double T_init = 1.5;
+    double T_final = 3.0;
+    int T_steps = 40;
     int tt;
     for(tt = 0; tt < T_steps; tt++) {
         initiate_sites();
         test_temp(T_init+(T_final-T_init)*((double)tt/(double)T_steps));
+        print_config();
     }
 
 

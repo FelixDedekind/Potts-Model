@@ -8,3 +8,4 @@ double calc_energy();
 void try_change_spin(int index);
 void print_config();
 void mc_timestep();
+double calc_magnetization();

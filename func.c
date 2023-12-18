@@ -129,3 +129,13 @@ void mc_timestep() {
         try_change_spin(rand_site);
     }
 }
+
+
+double calc_magnetization() {
+    double mag = 0;
+    int cc;
+    for(cc = 0; cc < N; cc++) {
+        mag += cos(sitelist[cc].phi/(double)q*2*PI)/(double)N;
+    }
+    return mag;
+}
