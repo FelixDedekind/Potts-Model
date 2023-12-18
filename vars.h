@@ -10,6 +10,7 @@
 #define PI 3.141592653589793238
 
 extern site *sitelist; // Declare the array as an external variable
+extern double energytable[q]; 
 extern double J;           //this is the constant of energy in the hamiltonian
 extern double kB;           //boltzmann constant
 extern double T;            //temperature

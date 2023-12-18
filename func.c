@@ -62,13 +62,21 @@ void initiate_sites() {
 }
 
 
+void initiate_energy_table() {
+    int cc;
+    for(cc = 0; cc < q; cc++) {
+        energytable[cc] = -J*cos(cc/(double)q*2*PI);
+    }
+}
+
+
 
 double calc_energy() {
     double energy = 0;
     int cc,dd;
     for(cc = 0; cc < N; cc++) {
         for(dd = 0; dd < nei_num; dd++) {
-            energy += -J*cos((sitelist[cc].phi-sitelist[sitelist[cc].neis[dd]].phi)/(double)q*2*PI);
+            energy += energytable[real_mod(sitelist[cc].phi-sitelist[sitelist[cc].neis[dd]].phi,q)];
         }
     }
     return energy/2;    //avoid double-counting
