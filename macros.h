@@ -5,12 +5,12 @@
 #define dim 2
 #endif
 
-#define size 2*dim
+#define nei_num 2*dim
 
 
 
-#ifndef q
-#define q 4
+#ifndef q               //define number of possible spin configurations
+#define q 2
 #endif
 
 #ifndef n
@@ -19,8 +19,8 @@
 #define N pow(n,dim)
 
 typedef struct site {
-    float phi;
-    int neis[size];
+    int phi;              //spin *configuration* given by 0,1,2,...,q. The angle is given by phi/q*2*PI. 
+    int neis[nei_num];      //list of neighbours
 }site;
 
 #endif

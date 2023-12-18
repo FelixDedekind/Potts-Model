@@ -4,11 +4,21 @@
 //compile with gcc -o pottsmodel main.c vars.c func.c -lm
 
 int main() {
-    mallocSitelist();   //mallocs sitelist
-    initiateSites();    //initializes with spin up and writes neighbour list
+    srand(time(NULL));      //seed rng
+    malloc_sitelist();   //mallocs sitelist
+    initiate_sites();    //initializes with spin up and writes neighbour list
 
-    
+    print_config();
 
-    freeSitelist();     //frees sitelist
+
+    int mc_timesteps = 100;
+
+    int ii;
+    for(ii = 0; ii < mc_timesteps; ii++) {
+        mc_timestep();
+        print_config();
+    }
+
+    free_sitelist();     //frees sitelist
     return 0;
 }

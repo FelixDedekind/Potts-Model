@@ -26,7 +26,7 @@ int coords_to_site(int* coords) {     //converts coordinates in n^dim grid into 
 }
 
 
-void initiateSites() {
+void initiate_sites() {
     if(sitelist == NULL) {
         printf("error: sitelist not defined! \n");
         exit(-1);
@@ -45,13 +45,13 @@ void initiateSites() {
                 neicoords[dd] = coords[dd];
             }
 
-            for(dd = 0; dd < dim; dd++) {
+            for(dd = 0; dd < dim; dd++) {           //then calculate coordinates of neighbours in each direction
                 neicoords[dd] = real_mod(coords[dd]+1,n);
                 nei1 = coords_to_site(neicoords);
                 neicoords[dd] = real_mod(coords[dd]-1,n);
                 nei2 = coords_to_site(neicoords);
                 neicoords[dd] = coords[dd];
-                sitelist[cc].neis[2*dd] = nei1;
+                sitelist[cc].neis[2*dd] = nei1;        //and write coordinates to respective neighbour list
                 sitelist[cc].neis[2*dd+1] = nei2;
             }
           
@@ -59,3 +59,54 @@ void initiateSites() {
     }
 }
 
+
+
+double calc_energy() {
+    double energy = 0;
+    int cc,dd;
+    for(cc = 0; cc < N; cc++) {
+        for(dd = 0; dd < nei_num; dd++) {
+            energy += -J*cos((sitelist[cc].phi-sitelist[sitelist[cc].neis[dd]].phi)/(double)q*2*PI);
+        }
+    }
+    return energy/2;    //avoid double-counting
+}
+
+
+
+void try_change_spin(int index) {
+    double e0 = calc_energy();
+    int rand_angle = (int)((double)rand()/RAND_MAX*q)%2;
+    int old_angle = sitelist[index].phi;
+    sitelist[index].phi = rand_angle;
+    double e1 = calc_energy();
+    if(e1-e0>0.) {
+        double acc_rand = (double)rand()/RAND_MAX;
+        if(exp(-(e1-e0)/(kB*T)) < acc_rand) {
+            sitelist[index].phi = old_angle;
+        }
+    }
+}
+
+
+void print_config() {           //2d cross section of configuration printed to terminal
+    int cc,dd;
+    printf("printing 2d cross section of config to terminal: \n");
+    for(cc = 0; cc < n; cc++) {
+        for(dd = 0; dd < n; dd++) {
+            printf("%d ", sitelist[cc*n+dd].phi);
+        }
+        printf("\n");
+    }
+}
+
+
+
+void mc_timestep() {
+    int ii;
+    int rand_site;
+    for(ii = 0; ii < N; ii++) {
+        rand_site = (int)((double)rand()/RAND_MAX*N);
+        try_change_spin(rand_site);
+    }
+}
