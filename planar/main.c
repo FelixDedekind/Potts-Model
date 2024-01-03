@@ -9,7 +9,7 @@ double test_temp(double Temp) {
     T = Temp;
     int mc_timesteps = 20000;
     int ii;
-    int naverage = 2000;
+    int naverage = 5000;
     double mag_avg = 0;
     double E_avg = 0;
     for(ii = 0; ii < mc_timesteps; ii++) {
@@ -31,23 +31,25 @@ int main() {
     initiate_energy_table();
     initiate_sites();    //initializes with spin up and writes neighbour list
     
-    /*
+    
     FILE* out_en = fopen("energy_over_temp.txt", "w");
     fclose(out_en);
 
     FILE* out_mag = fopen("mag_over_temp.txt", "w");
-    fclose(out_mag);
-
-
+    fclose(out_mag);	
+    
     double T_init = 1.5;
     double T_final = 3.0;
-    int T_steps = 200;
+    int T_steps = 50;
     int tt;
+    printf("hello\n");
     for(tt = 0; tt < T_steps; tt++) {
         initiate_sites();
         test_temp(T_init+(T_final-T_init)*((double)tt/(double)T_steps));
         print_config();
-    } */
+        printf("%f\n",(double)tt/T_steps);
+    }
+
 
 
     FILE* out = fopen("energy_over_time.txt", "w");

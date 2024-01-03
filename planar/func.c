@@ -132,10 +132,12 @@ void mc_timestep() {
 
 
 double calc_magnetization() {           // not sure if this is correct definition
-    double mag = 0;
+    double magx = 0;
+    double magy = 0;
     int cc;
     for(cc = 0; cc < N; cc++) {
-        mag += cos(sitelist[cc].phi/(double)q*2*PI)/(double)N;
+        magx += cos(sitelist[cc].phi/(double)q*2*PI)/(double)N;
+        magy += sin(sitelist[cc].phi/(double)q*2*PI)/(double)N;
     }
-    return mag;
+    return sqrt(magx*magx+magy*magy);
 }
