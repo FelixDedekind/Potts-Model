@@ -2,7 +2,7 @@
 #define macros_defined
 
 #ifndef dim             /*dim will be the dimension of calculations. If no calculation is defined, we set to 2*/
-#define dim 3
+#define dim 2
 #endif
 
 #define nei_num 2*dim
@@ -10,7 +10,7 @@
 
 
 #ifndef q               //define number of possible spin configurations
-#define q 2
+#define q 3
 #endif
 
 #ifndef n

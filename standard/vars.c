@@ -2,8 +2,8 @@
 
 
 site *sitelist; // Define the array in this source file
-double energytable[q]; 
-double J = 1;
+//double energytable[q]; 
+double J = 2;
 double kB = 1;
 double T = 1;
 

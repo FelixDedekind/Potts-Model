@@ -57,26 +57,30 @@ void initiate_sites() {
                 sitelist[cc].neis[2*dd+1] = nei2;
             }
           
-        }
+        }//can be done without using explicit coordinates
     }
 }
 
-
+/*
 void initiate_energy_table() {
     int cc;
     for(cc = 0; cc < q; cc++) {
         energytable[cc] = -J*cos(cc/(double)q*2*PI);
     }
 }
-
+*/
 
 
 double calc_energy() {
     double energy = 0;
     int cc,dd;
     for(cc = 0; cc < N; cc++) {
-        for(dd = 0; dd < nei_num; dd++) {
-            energy += energytable[real_mod(sitelist[cc].phi-sitelist[sitelist[cc].neis[dd]].phi,q)];
+        for(dd = 0; dd < nei_num; dd++) 
+        {
+            if(sitelist[cc].phi-sitelist[sitelist[cc].neis[dd]].phi==0)
+            {
+                energy -=J;
+            }
         }
     }
     return energy/2;    //avoid double-counting
@@ -86,12 +90,18 @@ double calc_energy_difference(int index, int newphi) {
     double e0 = 0,e1 = 0;
     int dd;
     for(dd = 0; dd < nei_num; dd++) {
-        e0 += energytable[real_mod(sitelist[index].phi-sitelist[sitelist[index].neis[dd]].phi,q)];
+        if(sitelist[index].phi-sitelist[sitelist[index].neis[dd]].phi==0)
+        {
+            e0-=J;
+        }
     }
     int oldphi = sitelist[index].phi;
     sitelist[index].phi = newphi;
     for(dd = 0; dd < nei_num; dd++) {
-        e1 += energytable[real_mod(sitelist[index].phi-sitelist[sitelist[index].neis[dd]].phi,q)];
+        if(sitelist[index].phi-sitelist[sitelist[index].neis[dd]].phi==0)
+        {
+            e1-=J;
+        }
     }
     sitelist[index].phi = oldphi;
     return e1-e0;
@@ -101,9 +111,11 @@ double calc_energy_difference(int index, int newphi) {
 void try_change_spin(int index) {
     int rand_phi = (int)((double)rand()/RAND_MAX*q)%q;
     double de = calc_energy_difference(index, rand_phi);
-    double acc_rand = (double)rand()/RAND_MAX;
     int flipable = 1;
-    if(de>0. && exp(-de/(kB*T)) < acc_rand) flipable = 0;           // make shorter
+    if(de>0.)
+    {
+        if(exp(-de/(kB*T)) < (double)rand()/RAND_MAX) flipable = 0;           // make shorter
+    }
     if(flipable==1) sitelist[index].phi = rand_phi;
 }
 
