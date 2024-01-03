@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 df = pd.read_csv("mag_over_temp.txt",delim_whitespace=True,header=None)
 T = df.to_numpy()[:,0]
-mag = abs(df.to_numpy()[:,1])
+mag = df.to_numpy()[:,1]
 
 plt.scatter(T,mag)
 plt.grid()
