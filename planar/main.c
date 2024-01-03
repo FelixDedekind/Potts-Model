@@ -31,6 +31,7 @@ int main() {
     initiate_energy_table();
     initiate_sites();    //initializes with spin up and writes neighbour list
     
+    /*
     FILE* out_en = fopen("energy_over_temp.txt", "w");
     fclose(out_en);
 
@@ -46,12 +47,12 @@ int main() {
         initiate_sites();
         test_temp(T_init+(T_final-T_init)*((double)tt/(double)T_steps));
         print_config();
-    }
+    } */
 
 
-    /*FILE* out = fopen("energy_over_time.txt", "w");
+    FILE* out = fopen("energy_over_time.txt", "w");
 
-    int mc_timesteps = 5000;
+    int mc_timesteps = 2000;
 
     int ii;
     for(ii = 0; ii < mc_timesteps; ii++) {
@@ -63,7 +64,7 @@ int main() {
 
     print_config();
 
-    fclose(out); */
+    fclose(out); 
     free_sitelist();     //frees sitelist
     return 0;
 }

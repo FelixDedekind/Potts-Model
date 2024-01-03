@@ -103,7 +103,7 @@ void try_change_spin(int index) {
     double de = calc_energy_difference(index, rand_phi);
     double acc_rand = (double)rand()/RAND_MAX;
     int flipable = 1;
-    if(de>0. && exp(-de/(kB*T)) < acc_rand) flipable = 0;
+    if(de>0. && exp(-de/(kB*T)) < acc_rand) flipable = 0;           // make shorter
     if(flipable==1) sitelist[index].phi = rand_phi;
 }
 
@@ -131,7 +131,7 @@ void mc_timestep() {
 }
 
 
-double calc_magnetization() {
+double calc_magnetization() {           // not sure if this is correct definition
     double mag = 0;
     int cc;
     for(cc = 0; cc < N; cc++) {
