@@ -28,7 +28,6 @@ double test_temp(double Temp) {
 int main() {
     srand(time(NULL));   //seed rng
     malloc_sitelist();   //mallocs sitelist
-    //initiate_energy_table();
     initiate_sites();    //initializes with spin up and writes neighbour list
     
     
@@ -39,17 +38,18 @@ int main() {
     fclose(out_mag);
 
 
-    double T_init = 1.5;
-    double T_final = 3.0;
-    int T_steps = 200;
+    double T_init = 1.9;
+    double T_final = 2.1;
+    int T_steps = 100;
     int tt;
     for(tt = 0; tt < T_steps; tt++) {
+        printf("Progress: %d/%d \n", tt, T_steps);
         initiate_sites();
         test_temp(T_init+(T_final-T_init)*((double)tt/(double)T_steps));
-        print_config();
+        //print_config();
     }
 
-
+    /*
     FILE* out = fopen("energy_over_time.txt", "w");
 
     int mc_timesteps = 20000;
@@ -59,12 +59,12 @@ int main() {
         mc_timestep();
         fprintf(out, "%d %f \n", ii, calc_energy());
         //print_config();
-    }
+    } 
 
 
     print_config();
 
-    fclose(out); 
+    fclose(out);  */
     free_sitelist();     //frees sitelist
     return 0;
 }

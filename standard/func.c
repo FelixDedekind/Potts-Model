@@ -147,7 +147,8 @@ double calc_magnetization() {           // not sure if this is correct definitio
     double mag = 0;
     int cc;
     for(cc = 0; cc < N; cc++) {
-        mag += cos(sitelist[cc].phi/(double)q*2*PI)/(double)N;
+        if(sitelist[cc].phi == 0) mag += 1;
+        else mag -= 1/(q-1);
     }
     return mag;
 }

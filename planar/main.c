@@ -44,10 +44,10 @@ int main() {
     int tt;
     printf("hello\n");
     for(tt = 0; tt < T_steps; tt++) {
+        printf("Progress: %d/%d \n", tt, T_steps);
         initiate_sites();
         test_temp(T_init+(T_final-T_init)*((double)tt/(double)T_steps));
         print_config();
-        printf("%f\n",(double)tt/T_steps);
     }
 
 
