@@ -14,7 +14,7 @@
 #endif
 
 #ifndef n
-#define n 100
+#define n 40
 #endif
 #define N pow(n,dim)
 
