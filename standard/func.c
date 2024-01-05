@@ -109,13 +109,16 @@ double calc_energy_difference(int index, int newphi) {
 
 
 void try_change_spin(int index) {
-    int rand_phi = (int)((double)rand()/RAND_MAX*q)%q;
+    int rand_phi = (int)fmod(((double)rand()/RAND_MAX)*q,q);
+    //printf("rand phi: %d/%d \n",rand_phi,q-1);
     double de = calc_energy_difference(index, rand_phi);
+    //printf("de = %f \n", de);
     int flipable = 1;
     if(de>0.)
     {
         if(exp(-de/(kB*T)) < (double)rand()/RAND_MAX) flipable = 0;           // make shorter
     }
+    //printf("flipable = %d \n", flipable);
     if(flipable==1) sitelist[index].phi = rand_phi;
 }
 
@@ -137,18 +140,26 @@ void mc_timestep() {
     int ii;
     int rand_site;
     for(ii = 0; ii < N; ii++) {
-        rand_site = (int)((double)rand()/RAND_MAX*N);
+        rand_site = (int)fmod(((double)rand()/RAND_MAX)*N,N);
+        //printf("chose random site: %d/%d \n",rand_site,(int)N);
+        if(rand_site<0 || rand_site>=N) printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH! \n");  //delete later
+        //printf("trying to change spin \n");
         try_change_spin(rand_site);
+        //printf("changed spin \n");
     }
 }
 
 
-double calc_magnetization() {           // not sure if this is correct definition
+double calc_magnetization() {           // this doesnt make a lot of sense
     double mag = 0;
     int cc;
     for(cc = 0; cc < N; cc++) {
-        if(sitelist[cc].phi == 0) mag += 1;
-        else mag -= 1/(q-1);
+        if(sitelist[cc].phi == 0) 
+        {
+            mag += 1;
+        } else {
+            mag -= 1/(q-1);
+        }
     }
     return mag;
 }

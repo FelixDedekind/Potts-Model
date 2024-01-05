@@ -19,7 +19,7 @@
 #define N pow(n,dim)
 
 typedef struct site {
-    int phi;              //spin *configuration* given by 0,1,2,...,q. The angle is given by phi/q*2*PI. 
+    int phi;              //spin *configuration* given by 0,1,2,...,q-1. The angle is given by phi/q*2*PI. 
     int neis[nei_num];      //list of neighbours
 }site;
 

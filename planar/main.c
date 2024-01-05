@@ -42,7 +42,6 @@ int main() {
     double T_final = 3.0;
     int T_steps = 50;
     int tt;
-    printf("hello\n");
     for(tt = 0; tt < T_steps; tt++) {
         printf("Progress: %d/%d \n", tt, T_steps);
         initiate_sites();
