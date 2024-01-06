@@ -9,7 +9,7 @@ double test_temp(double Temp) {
     //printf("opened output files \n");
     T = Temp;
     //printf("set temperatures \n");
-    int mc_timesteps = 20000;
+    int mc_timesteps = 50000;
     int ii;
     int naverage = 2000;
     double mag_avg = 0;
@@ -47,10 +47,10 @@ int main() {
 
     double T_init = 1.9;
     double T_final = 2.1;
-    int T_steps = 100;
+    int T_steps = 500;
     int tt;
     for(tt = 0; tt < T_steps; tt++) {
-        printf("Progress: %d/%d \n", tt, T_steps);
+        printf("Progress: %d/%d \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", tt, T_steps);
         initiate_sites();
         //printf("initiated sites \n");
         test_temp(T_init+(T_final-T_init)*((double)tt/(double)T_steps));
