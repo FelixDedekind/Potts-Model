@@ -7,7 +7,7 @@ double test_temp(double Temp) {
     FILE* out_en = fopen("energy_over_temp.txt", "a");
     FILE* out_mag = fopen("mag_over_temp.txt", "a");
     T = Temp;
-    int mc_timesteps = 10000;
+    int mc_timesteps = 15000;
     int ii;
     int naverage = 2000;
     double mag_avg = 0;
@@ -46,7 +46,7 @@ int main() {
     int tt;
     for(int cc = 0; cc < runs; cc++) {
         for(tt = 0; tt < T_steps; tt++) {
-            printf("Progress: %d/%d \n", tt, T_steps);
+            printf("Progress: %d/%d: %d/%d \n", cc, runs, tt, T_steps);
             initiate_sites();
             test_temp(T_init+(T_final-T_init)*((double)tt/(double)T_steps));
             print_config();

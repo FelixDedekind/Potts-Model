@@ -153,5 +153,5 @@ double calc_magnetization() {           // this doesnt make a lot of sense
         }
         if(mag>maxmag) maxmag=mag;
     }
-    return maxmag/N;///q*(q-1);
+    return maxmag/N;
 }
