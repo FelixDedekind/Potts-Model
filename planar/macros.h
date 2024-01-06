@@ -10,13 +10,13 @@
 
 
 #ifndef q               //define number of possible spin configurations
-#define q 4
+#define q 2
 #endif
 
 #ifndef n
 #define n 40
 #endif
-#define N pow(n,dim)
+#define N (int)pow(n,dim)
 
 typedef struct site {
     int phi;              //spin *configuration* given by 0,1,2,...,q-1. The angle is given by phi/q*2*PI. 

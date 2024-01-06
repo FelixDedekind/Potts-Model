@@ -38,7 +38,7 @@ void initiate_sites() {
         int rest = 0;
         int rand_spin;
         for(cc = 0; cc < N; cc++) {
-            int rand_spin = (int)((double) rand()/RAND_MAX*q);
+            int rand_spin = rand()%q;
             sitelist[cc].phi = rand_spin;       //all spins randomized
 
             site_to_coords(coords, cc);
@@ -52,23 +52,17 @@ void initiate_sites() {
                 nei1 = coords_to_site(neicoords);
                 neicoords[dd] = real_mod(coords[dd]-1,n);
                 nei2 = coords_to_site(neicoords);
-                neicoords[dd] = coords[dd];
+                printf("i: %d, nei1: %d, nei2: %d \n",cc,nei1,nei2);
                 sitelist[cc].neis[2*dd] = nei1;        //and write coordinates to respective neighbour list
                 sitelist[cc].neis[2*dd+1] = nei2;
             }
           
-        }//can be done without using explicit coordinates
+        }
     }
 }
 
-/*
-void initiate_energy_table() {
-    int cc;
-    for(cc = 0; cc < q; cc++) {
-        energytable[cc] = -J*cos(cc/(double)q*2*PI);
-    }
-}
-*/
+
+//void randomize_phis() <-- to be added
 
 
 double calc_energy() {
@@ -90,7 +84,7 @@ double calc_energy_difference(int index, int newphi) {
     double e0 = 0,e1 = 0;
     int dd;
     for(dd = 0; dd < nei_num; dd++) {
-        if(sitelist[index].phi-sitelist[sitelist[index].neis[dd]].phi==0)
+        if(sitelist[index].phi==sitelist[sitelist[index].neis[dd]].phi)
         {
             e0-=J;
         }
@@ -98,7 +92,7 @@ double calc_energy_difference(int index, int newphi) {
     int oldphi = sitelist[index].phi;
     sitelist[index].phi = newphi;
     for(dd = 0; dd < nei_num; dd++) {
-        if(sitelist[index].phi-sitelist[sitelist[index].neis[dd]].phi==0)
+        if(sitelist[index].phi==sitelist[sitelist[index].neis[dd]].phi)
         {
             e1-=J;
         }
@@ -109,16 +103,13 @@ double calc_energy_difference(int index, int newphi) {
 
 
 void try_change_spin(int index) {
-    int rand_phi = (int)fmod(((double)rand()/RAND_MAX)*q,q);
-    printf("rand phi: %d/%d \n",rand_phi,q-1);
+    int rand_phi = rand()%q;
     double de = calc_energy_difference(index, rand_phi);
-    printf("de = %f \n", de);
     int flipable = 1;
     if(de>0.)
     {
         if(exp(-de/(kB*T)) < (double)rand()/RAND_MAX) flipable = 0;           // make shorter
     }
-    printf("flipable = %d \n", flipable);
     if(flipable==1) sitelist[index].phi = rand_phi;
 }
 
@@ -140,12 +131,9 @@ void mc_timestep() {
     int ii;
     int rand_site;
     for(ii = 0; ii < N; ii++) {
-        rand_site = (int)fmod(((double)rand()/RAND_MAX)*N,N);
-        printf("chose random site: %d/%d \n",rand_site,(int)N);
-        if(rand_site<0 || rand_site>=N) printf("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAH! \n");  //delete later
-        printf("trying to change spin \n");
+        rand_site = rand()%N;
+        if(rand_site<0 || rand_site>=N) printf("BUNGER BUNGER BUNGER BUNGER BUNGER!!!! rand_site: %d \n \n", rand_site);
         try_change_spin(rand_site);
-        printf("changed spin \n");
     }
 }
 

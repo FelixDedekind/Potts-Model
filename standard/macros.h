@@ -16,10 +16,10 @@
 #ifndef n
 #define n 10
 #endif
-#define N pow(n,dim)
+#define N (int)pow(n,dim)
 
 typedef struct site {
-    int phi;              
+    int phi;                //is int in {0,1,...,q-1}
     int neis[nei_num];      //list of neighbours
 }site;
 

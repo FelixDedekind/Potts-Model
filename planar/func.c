@@ -38,7 +38,7 @@ void initiate_sites() {
         int rest = 0;
         int rand_spin;
         for(cc = 0; cc < N; cc++) {
-            int rand_spin = (int)((double) rand()/RAND_MAX*q);
+            int rand_spin = rand()%q;
             sitelist[cc].phi = rand_spin;       //all spins randomized
 
             site_to_coords(coords, cc);
@@ -99,7 +99,7 @@ double calc_energy_difference(int index, int newphi) {
 
 
 void try_change_spin(int index) {
-    int rand_phi = (int)((double)rand()/RAND_MAX*q)%q;
+    int rand_phi = rand()%q;
     double de = calc_energy_difference(index, rand_phi);
     double acc_rand = (double)rand()/RAND_MAX;
     int flipable = 1;
@@ -125,7 +125,8 @@ void mc_timestep() {
     int ii;
     int rand_site;
     for(ii = 0; ii < N; ii++) {
-        rand_site = (int)((double)rand()/RAND_MAX*N);
+        rand_site = rand()%N;
+        if(rand_site<0 || rand_site>=N) printf("BUNGER BUNGER BUNGER BUNGER BUNGER!!!! rand_site: %d \n \n", rand_site);
         try_change_spin(rand_site);
     }
 }
