@@ -10,11 +10,11 @@
 
 
 #ifndef q               //define number of possible spin configurations
-#define q 2
+#define q 3
 #endif
 
 #ifndef n
-#define n 10
+#define n 25
 #endif
 #define N (int)pow(n,dim)
 

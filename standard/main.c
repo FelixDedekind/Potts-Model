@@ -7,7 +7,7 @@ double test_temp(double Temp) {
     FILE* out_en = fopen("energy_over_temp.txt", "a");
     FILE* out_mag = fopen("mag_over_temp.txt", "a");
     T = Temp;
-    int mc_timesteps = 50000;
+    int mc_timesteps = 10000;
     int ii;
     int naverage = 2000;
     double mag_avg = 0;
@@ -31,7 +31,7 @@ int main() {
     initiate_sites();    //initializes with spin up and writes neighbour list
     print_config();
 
-    /*
+    
     FILE* out_en = fopen("energy_over_temp.txt", "w");
     fclose(out_en);
 
@@ -39,15 +39,21 @@ int main() {
     fclose(out_mag);
 
 
-    double T_init = 1.9;
-    double T_final = 2.1;
-    int T_steps = 500;
+    double T_init = 1.4;
+    double T_final = 2.5;
+    int T_steps = 50;
+    int runs = 5;
     int tt;
-    for(tt = 0; tt < T_steps; tt++) {
-        printf("Progress: %d/%d \n", tt, T_steps);
-        initiate_sites();
-        test_temp(T_init+(T_final-T_init)*((double)tt/(double)T_steps));
-    } */
+    for(int cc = 0; cc < runs; cc++) {
+        for(tt = 0; tt < T_steps; tt++) {
+            printf("Progress: %d/%d \n", tt, T_steps);
+            initiate_sites();
+            test_temp(T_init+(T_final-T_init)*((double)tt/(double)T_steps));
+            print_config();
+            printf("mag = %f \n",calc_magnetization());
+        }
+    }
+     
 
     /*
     FILE* out = fopen("energy_over_time.txt", "w");

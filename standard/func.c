@@ -52,7 +52,6 @@ void initiate_sites() {
                 nei1 = coords_to_site(neicoords);
                 neicoords[dd] = real_mod(coords[dd]-1,n);
                 nei2 = coords_to_site(neicoords);
-                printf("i: %d, nei1: %d, nei2: %d \n",cc,nei1,nei2);
                 sitelist[cc].neis[2*dd] = nei1;        //and write coordinates to respective neighbour list
                 sitelist[cc].neis[2*dd+1] = nei2;
             }
@@ -140,14 +139,19 @@ void mc_timestep() {
 
 double calc_magnetization() {           // this doesnt make a lot of sense
     double mag = 0;
-    int cc;
-    for(cc = 0; cc < N; cc++) {
-        if(sitelist[cc].phi == 0) 
-        {
-            mag += 1;
-        } else {
-            mag -= 1/(q-1);
+    double maxmag = 0;
+    int cc,dd;
+    for(dd=0; dd < q; dd++) {
+        mag = 0;
+        for(cc = 0; cc < N; cc++) {       
+            if(sitelist[cc].phi == dd) 
+            {
+                mag += (double)1;
+            } else {
+                mag -= (double)1/(q-1);
+            }
         }
+        if(mag>maxmag) maxmag=mag;
     }
-    return mag;
+    return maxmag/N;///q*(q-1);
 }
