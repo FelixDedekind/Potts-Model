@@ -61,7 +61,14 @@ void initiate_sites() {
 }
 
 
-//void randomize_phis() <-- to be added
+void randomize_phis() {
+    int cc;
+    for(cc = 0; cc < N; cc++) {
+            int rand_spin = rand()%q;
+            sitelist[cc].phi = rand_spin;
+    }
+}
+
 
 
 double calc_energy() {

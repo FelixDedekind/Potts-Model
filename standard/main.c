@@ -47,7 +47,7 @@ int main() {
     for(int cc = 0; cc < runs; cc++) {
         for(tt = 0; tt < T_steps; tt++) {
             printf("Progress: %d/%d: %d/%d \n", cc, runs, tt, T_steps);
-            initiate_sites();
+            randomize_phis();
             test_temp(T_init+(T_final-T_init)*((double)tt/(double)T_steps));
             print_config();
             printf("mag = %f \n",calc_magnetization());
