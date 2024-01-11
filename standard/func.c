@@ -63,13 +63,21 @@ void initiate_sites() {
 
 void randomize_phis() {
     int cc;
+    int rand_spin;
     for(cc = 0; cc < N; cc++) {
-            int rand_spin = rand()%q;
+            rand_spin = rand()%q;
             sitelist[cc].phi = rand_spin;
     }
 }
 
-
+void init_acc_rates()
+{
+    int ii;
+    for(ii = 0; ii < nei_num+1; ii++)
+    {
+        acc_rates[ii]=exp(-(ii*J)/(kB*T));
+    }
+}
 
 double calc_energy() {
     double energy = 0;
@@ -86,37 +94,29 @@ double calc_energy() {
     return energy/2;    //avoid double-counting
 }
 
-double calc_energy_difference(int index, int newphi) {
-    double e0 = 0,e1 = 0;
+int calc_energy_difference(int index, int newphi) {
+    int n0 = 0,n1 = 0;
     int dd;
-    for(dd = 0; dd < nei_num; dd++) {
-        if(sitelist[index].phi==sitelist[sitelist[index].neis[dd]].phi)
-        {
-            e0-=J;
-        }
-    }
     int oldphi = sitelist[index].phi;
-    sitelist[index].phi = newphi;
     for(dd = 0; dd < nei_num; dd++) {
-        if(sitelist[index].phi==sitelist[sitelist[index].neis[dd]].phi)
+        if(oldphi==sitelist[sitelist[index].neis[dd]].phi)
         {
-            e1-=J;
+            n0+=1;
+        }
+        if(newphi==sitelist[sitelist[index].neis[dd]].phi)
+        {
+            n1+=1;
         }
     }
-    sitelist[index].phi = oldphi;
-    return e1-e0;
+    return n1-n0;
 }
 
 
 void try_change_spin(int index) {
     int rand_phi = rand()%q;
-    double de = calc_energy_difference(index, rand_phi);
-    int flipable = 1;
-    if(de>0.)
-    {
-        if(exp(-de/(kB*T)) < (double)rand()/RAND_MAX) flipable = 0;           // make shorter
-    }
-    if(flipable==1) sitelist[index].phi = rand_phi;
+    int de = -calc_energy_difference(index, rand_phi);
+    int flipable = (int) ((de<=0) || (acc_rates[de] >= (double)rand()/RAND_MAX));
+    sitelist[index].phi = flipable*rand_phi + (1-flipable) * sitelist[index].phi;
 }
 
 

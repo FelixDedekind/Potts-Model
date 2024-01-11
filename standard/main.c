@@ -30,6 +30,7 @@ int main() {
     malloc_sitelist();   //mallocs sitelist
     initiate_sites();    //initializes with spin up and writes neighbour list
     print_config();
+    init_acc_rates();
 
     
     FILE* out_en = fopen("energy_over_temp.txt", "w");
@@ -48,6 +49,7 @@ int main() {
         for(tt = 0; tt < T_steps; tt++) {
             printf("Progress: %d/%d: %d/%d \n", cc, runs, tt, T_steps);
             randomize_phis();
+            init_acc_rates();
             test_temp(T_init+(T_final-T_init)*((double)tt/(double)T_steps));
             print_config();
             printf("mag = %f \n",calc_magnetization());
