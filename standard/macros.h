@@ -2,15 +2,15 @@
 #define macros_defined
 
 #ifndef dim             /*dim will be the dimension of calculations. If no calculation is defined, we set to 2*/
-#define dim 2
+#define dim 2           //doesnt work for dim = 1 and q = 1 CURRENTLY       ===> FIX
 #endif 
 
 #define nei_num 2*dim
 
 
 
-#ifndef q               //define number of possible spin configurations
-#define q 4
+#ifndef q               
+#define q 2
 #endif
 
 #ifndef n

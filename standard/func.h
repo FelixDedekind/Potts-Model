@@ -15,3 +15,4 @@ int calc_energy_difference(int index, int newphi);
 void print_labels();
 void update_labels();
 void calc_percolation();
+void check_labeling();

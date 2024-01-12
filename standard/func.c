@@ -51,13 +51,14 @@ void initiate_sites() {
                 neicoords[dd] = coords[dd];
             }
 
-            for(dd = 0; dd < dim; dd++) {           //then calculate coordinates of neighbours in each direction
+            for(dd = 0; dd < dim; dd++) {                      //then calculate coordinates of neighbours in each direction
                 neicoords[dd] = real_mod(coords[dd]+1,n);
                 nei1 = coords_to_site(neicoords);
                 neicoords[dd] = real_mod(coords[dd]-1,n);
                 nei2 = coords_to_site(neicoords);
                 sitelist[cc].neis[2*dd] = nei1;        //and write coordinates to respective neighbour list
                 sitelist[cc].neis[2*dd+1] = nei2;
+                neicoords[dd] = coords[dd];
             }
           
         }
@@ -148,7 +149,7 @@ void mc_timestep() {
 }
 
 
-double calc_magnetization() {           // this doesnt make a lot of sense
+double calc_magnetization() {           // MAKE AN EXCEPTION FOR Q = 1
     double mag = 0;
     double maxmag = 0;
     int cc,dd;
@@ -168,7 +169,7 @@ double calc_magnetization() {           // this doesnt make a lot of sense
 }
 
 void print_labels() {
-    int cc,dd;
+    int cc,dd,ee;
     printf("printing 2d cross section of labels to terminal: \n");
     for(cc = 0; cc < n; cc++) {
         for(dd = 0; dd < n; dd++) {
@@ -176,6 +177,36 @@ void print_labels() {
         }
         printf("\n");
     }
+    /* printf("printing 2d cross section of ABOVES to terminal: \n");
+    for(cc = 0; cc < n; cc++) {
+        for(dd = 0; dd < n; dd++) {
+            printf("%d ", sitelist[cc*n+dd].above);
+        }
+        printf("\n");
+    }
+    printf("printing 2d cross section checking neighbour location: \n");
+    int check=0;
+    for(cc = 0; cc < n; cc++) 
+    {
+        for(dd = 0; dd < n; dd++) 
+        {   
+            check=0;
+            for(ee=0;ee<nei_num;ee++)
+                {
+                    if(sitelist[cc*n+dd].neis[ee]==2*n+2)
+                    {
+                        printf("0");
+                        check=1;
+                        continue;
+                    }
+                }
+            {
+                if(check==1) continue;
+                printf("1");
+            }
+        }
+    printf("\n");
+    } */
 }
 
 void update_labels() {
@@ -202,24 +233,19 @@ void update_labels() {
                 replacelabel = sitelist[cc].label;
 
                 //get to lowest site in upper array
-                int bottom_of_up = cc;
-                while(sitelist[bottom_of_up].below!=-1) {
-                    bottom_of_up = sitelist[bottom_of_up].below;
-                } 
+                int bot_of_top = cc;
+                while(sitelist[bot_of_top].below!=-1) bot_of_top = sitelist[bot_of_top].below;
 
                 //get to top site in lower array
                 int top_of_bot = sitelist[cc].neis[dd];
-                sitelist[top_of_bot].label = replacelabel;
-                while(sitelist[top_of_bot].above!=-1) {
-                    top_of_bot = sitelist[top_of_bot].above;
-                }
+                while(sitelist[top_of_bot].above!=-1) top_of_bot = sitelist[top_of_bot].above;
 
                 //combine clusters by setting new branch neighbours
-                sitelist[bottom_of_up].below = top_of_bot;
-                sitelist[top_of_bot].above = bottom_of_up;
+                sitelist[bot_of_top].below = top_of_bot;
+                sitelist[top_of_bot].above = bot_of_top;
 
                 //update labels
-                int counterlabel = bottom_of_up;
+                int counterlabel = bot_of_top;
                 while(sitelist[counterlabel].below!=-1) {
                     counterlabel = sitelist[counterlabel].below;
                     sitelist[counterlabel].label = replacelabel;
@@ -227,8 +253,36 @@ void update_labels() {
             }
         }
     }
+    check_labeling();
 }
 
 void calc_percolation() {
     update_labels();
+}
+
+void check_labeling()
+{
+    printf("Checking labelling\n");
+    int cc, dd;
+    for(cc = 0; cc < N; cc++) 
+    {
+        for(dd = 0; dd < nei_num; dd++) 
+        {
+            if(sitelist[cc].phi==sitelist[sitelist[cc].neis[dd]].phi)
+            {
+                if(sitelist[cc].label!=sitelist[sitelist[cc].neis[dd]].label)
+                {
+                    printf("BigBunger: %d\n",cc);
+                }
+            }
+            if(sitelist[cc].phi!=sitelist[sitelist[cc].neis[dd]].phi)
+            {
+                if(sitelist[cc].label==sitelist[sitelist[cc].neis[dd]].label)
+                {
+                    printf("BigerBunger: %d\n",cc);
+                }
+            }
+        }    
+    
+    }
 }

@@ -29,7 +29,7 @@ int main() {
     srand(time(NULL));   //seed rng
     malloc_sitelist();   //mallocs sitelist
     initiate_sites();    //initializes with spin up and writes neighbour list
-    print_config();
+    //print_config();
     init_acc_rates();
 
     /*
@@ -60,7 +60,7 @@ int main() {
     
     FILE* out = fopen("energy_over_time.txt", "w");
 
-    int mc_timesteps = 20000;
+    int mc_timesteps = 10000;
 
     int ii;
     for(ii = 0; ii < mc_timesteps; ii++) {
