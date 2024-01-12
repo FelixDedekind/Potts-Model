@@ -38,6 +38,10 @@ void initiate_sites() {
         int rest = 0;
         int rand_spin;
         for(cc = 0; cc < N; cc++) {
+            sitelist[cc].label = cc;
+            sitelist[cc].above = -1;
+            sitelist[cc].below = -1;
+
             int rand_spin = rand()%q;
             sitelist[cc].phi = rand_spin;       //all spins randomized
 
@@ -161,4 +165,70 @@ double calc_magnetization() {           // this doesnt make a lot of sense
         if(mag>maxmag) maxmag=mag;
     }
     return maxmag/N;
+}
+
+void print_labels() {
+    int cc,dd;
+    printf("printing 2d cross section of labels to terminal: \n");
+    for(cc = 0; cc < n; cc++) {
+        for(dd = 0; dd < n; dd++) {
+            printf("%d ", sitelist[cc*n+dd].label);
+        }
+        printf("\n");
+    }
+}
+
+void update_labels() {
+    int searchlabel;
+    int replacelabel;
+    int cc, dd;
+
+    //reset labels
+    for(cc = 0; cc < N; cc++) {
+            sitelist[cc].label = cc;
+            sitelist[cc].above = -1;
+            sitelist[cc].below = -1;
+    }
+    
+
+    //check for connections
+    for(cc = 0; cc < N; cc++) {
+        for(dd = 0; dd < nei_num; dd++) {
+            if(sitelist[cc].label==sitelist[sitelist[cc].neis[dd]].label) {
+                continue;
+            }
+            if(sitelist[cc].phi==sitelist[sitelist[cc].neis[dd]].phi)  {
+                //define label to replace other labels with
+                replacelabel = sitelist[cc].label;
+
+                //get to lowest site in upper array
+                int bottom_of_up = cc;
+                while(sitelist[bottom_of_up].below!=-1) {
+                    bottom_of_up = sitelist[bottom_of_up].below;
+                } 
+
+                //get to top site in lower array
+                int top_of_bot = sitelist[cc].neis[dd];
+                sitelist[top_of_bot].label = replacelabel;
+                while(sitelist[top_of_bot].above!=-1) {
+                    top_of_bot = sitelist[top_of_bot].above;
+                }
+
+                //combine clusters by setting new branch neighbours
+                sitelist[bottom_of_up].below = top_of_bot;
+                sitelist[top_of_bot].above = bottom_of_up;
+
+                //update labels
+                int counterlabel = bottom_of_up;
+                while(sitelist[counterlabel].below!=-1) {
+                    counterlabel = sitelist[counterlabel].below;
+                    sitelist[counterlabel].label = replacelabel;
+                }
+            }
+        }
+    }
+}
+
+void calc_percolation() {
+    update_labels();
 }

@@ -10,17 +10,19 @@
 
 
 #ifndef q               //define number of possible spin configurations
-#define q 3
+#define q 4
 #endif
 
 #ifndef n
-#define n 25
+#define n 20
 #endif
 #define N (int)pow(n,dim)
 
 typedef struct site {
     int phi;                //is int in {0,1,...,q-1}
     int neis[nei_num];      //list of neighbours
+    int label;              //label for percolation
+    int above, below;       //bond pointers for percolation
 }site;
 
 #endif
