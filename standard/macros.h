@@ -14,7 +14,7 @@
 #endif
 
 #ifndef n
-#define n 20
+#define n 50
 #endif
 #define N (int)pow(n,dim)
 

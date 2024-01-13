@@ -32,7 +32,7 @@ int main() {
     //print_config();
     init_acc_rates();
 
-    /*
+    
     FILE* out_en = fopen("energy_over_temp.txt", "w");
     fclose(out_en);
 
@@ -40,8 +40,8 @@ int main() {
     fclose(out_mag);
 
 
-    double T_init = 1.4;
-    double T_final = 2.5;
+    double T_init = 1.9;
+    double T_final = 2.7;
     int T_steps = 50;
     int runs = 5;
     int tt;
@@ -54,10 +54,10 @@ int main() {
             print_config();
             printf("mag = %f \n",calc_magnetization());
         }
-    }*/
+    }
      
 
-    
+    /*
     FILE* out = fopen("energy_over_time.txt", "w");
 
     int mc_timesteps = 10000;
@@ -73,7 +73,7 @@ int main() {
 
 
 
-    fclose(out); 
+    fclose(out); */
     free_sitelist();     //frees sitelist
     return 0;
 }
