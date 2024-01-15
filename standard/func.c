@@ -260,9 +260,25 @@ void update_labels() {      //function to label clusters
     //check_labeling();
 }
 
-void calc_percolation() {       //function to calculate the percolation
+double calc_largest_cluster() {       //function to calculate the percolation
     //first update labels
-    update_labels();        
+    update_labels();   
+    //variables
+    int cc;
+    int maxsize = 0;
+    int * sizes;
+    //list of all possible labels
+    sizes = malloc(N*sizeof(int));
+    for(cc = 0; cc < N; cc++) sizes[cc]=0;
+    //count how often labels appear
+    for(cc = 0; cc < N; cc++) sizes[sitelist[cc].label]+=1;
+    //find maximum size of clusters
+    for(cc = 0; cc < N; cc++) {
+        if(maxsize < sizes[cc]) maxsize = sizes[cc];
+    }
+    free(sizes);
+    //return maximum size
+    return (double)maxsize/N;     
 }
 
 void check_labeling()
@@ -291,3 +307,5 @@ void check_labeling()
     
     }
 }
+
+

@@ -14,5 +14,5 @@ double calc_magnetization();
 int calc_aligned_neighbours_difference(int index, int newphi);
 void print_labels();
 void update_labels();
-void calc_percolation();
+double calc_largest_cluster();
 void check_labeling();
