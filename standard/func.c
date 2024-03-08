@@ -203,6 +203,8 @@ double calc_magnetization() {           // MAKE AN EXCEPTION FOR Q = 1
     
 }
 
+
+
 void print_labels() {           //prints a cross section of the labels to the terminal
     int cc,dd,ee;
     printf("printing 2d cross section of labels to terminal: \n");

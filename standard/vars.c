@@ -5,7 +5,7 @@ site *sitelist; // Define the array in this source file
 double *acc_rates;
 double J = 2;
 double kB = 1;
-double T = 2.35;
+double T = 1;
 
 void malloc_sitelist() {
     sitelist = malloc(N * sizeof(site)); // Allocate memory for the sitelist

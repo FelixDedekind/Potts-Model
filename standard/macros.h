@@ -10,7 +10,7 @@
 
 
 #ifndef q               
-#define q 10
+#define q 2
 #endif
 
 #ifndef n

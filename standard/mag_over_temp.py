@@ -7,10 +7,12 @@ T = df.to_numpy()[:,0]
 mag = df.to_numpy()[:,1]
 deltamag = df.to_numpy()[:,2]
 
-plt.errorbar(T,mag,yerr=deltamag,fmt='.')
+#plt.errorbar(T,mag,yerr=deltamag,fmt='.')
+plt.scatter(T,mag)
 plt.grid()
 plt.xlabel("temperature (kB = 1)")
 plt.ylabel("magnetization")
 plt.xlim(T[0],T[-1])
+plt.ylim(0,1)
 plt.tight_layout()
 plt.show()
