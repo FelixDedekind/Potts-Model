@@ -141,8 +141,8 @@ int main() {
     double phase_transition = 1/(log(1+sqrt(q)));
     printf("q = %i \n", q);
     printf("phase transition predicted at %f \n", phase_transition);
-    double T_init = phase_transition-0.1-0.01;
-    double T_final = phase_transition+0.1+0.01;
+    double T_init = phase_transition-0.3-0.01;
+    double T_final = phase_transition+0.3+0.01;
     int T_steps = 20;
     int runs = 1;
     int tau = 0;

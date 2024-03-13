@@ -10,11 +10,11 @@
 
 
 #ifndef q               
-#define q 2
+#define q 4
 #endif
 
 #ifndef n
-#define n 50
+#define n 100
 #endif
 #define N (int)pow(n,dim)
 
