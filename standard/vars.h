@@ -14,6 +14,7 @@ extern double *acc_rates;
 extern double J;           //this is the constant of energy in the hamiltonian
 extern double kB;           //boltzmann constant
 extern double T;            //temperature
+extern double cluster_threshold;
 
 void malloc_sitelist();
 void free_sitelist();

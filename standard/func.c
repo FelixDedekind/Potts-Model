@@ -176,7 +176,7 @@ void mc_timestep() {                //performs a mc timestep, i.e. tries N spin 
 }
 
 
-double calc_magnetization() {           // MAKE AN EXCEPTION FOR Q = 1
+double calc_magnetization() {           // we should make a list and make it order N (even though it won't improve much)
     //if q > 1, calculate magnetization in direction of each basis vector
     if(q>1) {               
         double mag = 0;

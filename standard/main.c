@@ -6,7 +6,7 @@
 int correlation_function_and_time(double* correlations, int test_timesteps, int samples) {
     //get average and std first
     randomize_phis();
-    int equi_time = 30000;
+    int equi_time = 15000;
     int period = 2500;
     int measurements = 10;
     double mean = 0;
@@ -25,11 +25,6 @@ int correlation_function_and_time(double* correlations, int test_timesteps, int 
         mean += explicits[ii];
     }
     mean /= (measurements+1);
-    double std = 0;
-    for(ii = 0; ii < measurements+1; ii++) {
-        std += (explicits[ii]-mean)*(explicits[ii]-mean);
-    }
-    std = sqrt(std)/sqrt(measurements+1-1);
     randomize_phis();
 
     //read out fluctuations at equidistant times
@@ -39,7 +34,7 @@ int correlation_function_and_time(double* correlations, int test_timesteps, int 
     for(ii = 0; ii < test_timesteps; ii++) {
         mc_timestep();
         if(ii == jj*sample_period) {
-            temp_deltam[jj] = (calc_magnetization() - mean)/std;
+            temp_deltam[jj] = (calc_magnetization() - mean);
             jj++;
         }
     }
@@ -52,6 +47,7 @@ int correlation_function_and_time(double* correlations, int test_timesteps, int 
             temporary_correlation += temp_deltam[ii]*temp_deltam[ii+tt];
         }
         correlations[tt] = (double)temporary_correlation/(samples-tt+1);
+        correlations[tt] /= correlations[0];
     }
 
     //calculate correlation time
@@ -75,7 +71,7 @@ int correlation_function_and_time(double* correlations, int test_timesteps, int 
 
 int get_correlation_time() {
     printf("probing correlation time at temperature: T=%f \n", T);
-    int test_timesteps = 20000; 
+    int test_timesteps = 4000; 
     int tests = 5;
     int samples = 201;
     double * correlations = malloc(samples/2*sizeof(double));
@@ -111,16 +107,44 @@ void test_temp(int tau, double* mag, double* E, double* lcs) {
     }
 }
 
+void test_temp_percolation(int tau) {
+    printf("probing temperature: T=%f \n", T);
+    randomize_phis();
+    FILE* out_perc_prob = fopen("./perc_prob_over_temp.txt", "a");
+    int mc_timesteps = 5*tau;
+    int measurements = 1000;
+    int ii,tt;
+    //perform timesteps
+    for(ii = 0; ii < mc_timesteps; ii++) {
+        mc_timestep();
+    }
+    for(ii = 0; ii < measurements; ii++) {
+        for(tt = 0; tt < tau; tt++) {
+            mc_timestep();
+        }
+        if(calc_largest_cluster()>=cluster_threshold) {
+            fprintf(out_perc_prob,"1");
+        } else {
+            fprintf(out_perc_prob,"0");
+        }
+    }
+    fprintf(out_perc_prob,"\n");
+    fclose(out_perc_prob);
+}
+
 int main() {
     srand(time(NULL));   //seed rng
     malloc_sitelist();   //mallocs sitelist
     initiate_sites();    //initializes with spin up and writes neighbour list
     init_acc_rates();    //initialize array of possible acceptance rates
 
-    double T_init = 1.9;
-    double T_final = 2.6;
+    double phase_transition = 1/(log(1+sqrt(q)));
+    printf("q = %i \n", q);
+    printf("phase transition predicted at %f \n", phase_transition);
+    double T_init = phase_transition-0.1-0.01;
+    double T_final = phase_transition+0.1+0.01;
     int T_steps = 20;
-    int runs = 5;
+    int runs = 1;
     int tau = 0;
 
     double mags[runs];
@@ -130,20 +154,24 @@ int main() {
     FILE* out_en = fopen("./energy_over_temp.txt", "w");
     FILE* out_mag = fopen("./mag_over_temp.txt", "w");
     FILE* out_lcs = fopen("./lcs_over_temp.txt", "w");
+    FILE* out_perc_prob = fopen("./perc_prob_over_temp.txt", "w");
+    fclose(out_perc_prob);
+
 
     int tt,cc,jj;
     for(tt = 0; tt < T_steps; tt++) {
         T = T_init+(T_final-T_init)*((double)tt/(double)T_steps);
         init_acc_rates();
         tau = get_correlation_time();
-        if(tau < 1000) tau = 1000;
+        if(tau < 500.0) tau = 500.0;
         for(cc = 0; cc < runs; cc++) {
             printf("Progress: %d/%d: %d/%d \n", tt, T_steps, cc, runs);
             randomize_phis();
             mags[cc] = 0;
             Es[cc] = 0;
             lcs[cc] = 0;
-            test_temp(tau, &mags[cc],&Es[cc],&lcs[cc]);
+            //test_temp(tau, &mags[cc],&Es[cc],&lcs[cc]);
+            test_temp_percolation(tau);
             //print_config();
             printf("mag = %f \n",mags[cc]);
         }
@@ -173,6 +201,14 @@ int main() {
     fclose(out_en);
     fclose(out_mag);
     fclose(out_lcs);
+
+    /*
+    T = 1.1;
+    int test_timesteps = 7000; 
+    int samples = 201;
+    double * correlations = malloc(samples/2*sizeof(double));
+    correlation_function_and_time(correlations,test_timesteps,samples);
+    */
 
     /*
     FILE* out = fopen("energy_over_time.txt", "w");
