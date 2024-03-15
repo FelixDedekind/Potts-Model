@@ -16,3 +16,7 @@ void print_labels();
 void update_labels();
 double calc_largest_cluster();
 void check_labeling();
+int correlation_function_and_time(double* correlations, int test_timesteps, int samples);
+int get_correlation_time();
+void test_temp(int tau, double* mag, double* E, double* lcs);
+void test_temp_percolation(int tau);

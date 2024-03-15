@@ -6,7 +6,7 @@ double *acc_rates;
 double J = 1;
 double kB = 1;
 double T = 1;
-double cluster_threshold = 0.4;
+double cluster_threshold = 0.7;
 
 void malloc_sitelist() {
     sitelist = malloc(N * sizeof(site)); // Allocate memory for the sitelist

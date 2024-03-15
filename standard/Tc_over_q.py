@@ -7,8 +7,8 @@ font = {'size'   : 18}
 matplotlib.rc('font', **font)
 
 q = [2,3,4,5]
-Tc = [1.15,1.025,0.925,0.8625]
-Tc_error = [0.035,0.02,0.025,0.0125]
+Tc = [1.15,1.01,0.925,0.8625]
+Tc_error = [0.02,0.02,0.02,0.02]
 
 qspace = np.linspace(q[0]-1,q[-1]+1,1000)
 Tcspace = [1/(np.log(1+np.sqrt(qq))) for qq in qspace]

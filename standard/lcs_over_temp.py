@@ -6,7 +6,7 @@ import matplotlib
 font = {'size'   : 18}
 matplotlib.rc('font', **font)
 
-df = pd.read_csv("q=4_closeup/lcs_over_temp.txt",delim_whitespace=True,header=None)
+df = pd.read_csv("q=5_closeup/lcs_over_temp.txt",delim_whitespace=True,header=None)
 T = df.to_numpy()[:,0]
 lcs = df.to_numpy()[:,1]
 deltalcs = df.to_numpy()[:,2]
